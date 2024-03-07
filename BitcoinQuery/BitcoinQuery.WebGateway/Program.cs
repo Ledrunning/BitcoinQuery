@@ -1,4 +1,8 @@
 using System.Diagnostics;
+using BitcoinQuery.Service.Conrtacts;
+using BitcoinQuery.Service.Exceptions;
+using BitcoinQuery.Service.RestService;
+using BitcoinQuery.WebGateway.Configuration;
 using NLog;
 using NLog.Web;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -13,7 +17,22 @@ try
 
     builder.Logging.ClearProviders().SetMinimumLevel(LogLevel.Debug).AddNLog(loggerConfig);
 
+    //Setup cex.io config section
+    var cexConfigSection = builder.Configuration.GetSection(CexConfigSection.SectionName).Get<CexConfigSection>();
+
     // Add services to the container.
+    builder.Services.AddTransient<IBitcoinQueryService>(_ =>
+    {
+        // If something went wrong with the config section - throw it up!
+        if (cexConfigSection is { BaseUrl: { }, FirstCurrency: { }, SecondCurrency: { } })
+        {
+            return new BitcoinQueryService(logger, cexConfigSection.BaseUrl, cexConfigSection.Timeout,
+                cexConfigSection.FirstCurrency, cexConfigSection.SecondCurrency);
+        }
+
+        throw new BitcoinQueryServiceException("Configuration error or invalid file! Check the appsettings.json file.");
+    });
+
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();

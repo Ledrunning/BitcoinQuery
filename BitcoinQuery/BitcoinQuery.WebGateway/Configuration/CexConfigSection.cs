@@ -1,6 +1,6 @@
 ﻿namespace BitcoinQuery.WebGateway.Configuration;
 
-public class GatewayConfig
+public class CexConfigSection
 {
     public const string SectionName = "CexApi";
     public string? BaseUrl { get; set; }

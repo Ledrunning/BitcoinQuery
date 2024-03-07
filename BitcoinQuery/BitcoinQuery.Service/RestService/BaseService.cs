@@ -12,6 +12,7 @@ public class BaseService
     protected readonly string BaseUrl;
     protected readonly string FirstCurrency;
     protected readonly string SecondCurrency;
+    protected readonly RestClient RestClient;
 
     public BaseService(ILogger logger, string baseUrl, int timeout, string firstCurrency, string secondCurrency)
     {
@@ -20,6 +21,8 @@ public class BaseService
         _timeout = timeout;
         FirstCurrency = firstCurrency;
         SecondCurrency = secondCurrency;
+
+        RestClient = new RestClient(SetOptions(new Uri(BaseUrl)));
     }
 
     protected T GetContent<T>(RestResponseBase response, string url)
