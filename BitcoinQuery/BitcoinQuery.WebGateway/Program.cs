@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using BitcoinQuery.Service.Conrtacts;
 using BitcoinQuery.Service.Exceptions;
+using BitcoinQuery.Service.Mapper;
 using BitcoinQuery.Service.RestService;
 using BitcoinQuery.WebGateway.Configuration;
 using NLog;
@@ -14,19 +15,21 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-
     builder.Logging.ClearProviders().SetMinimumLevel(LogLevel.Debug).AddNLog(loggerConfig);
 
     //Setup cex.io config section
     var cexConfigSection = builder.Configuration.GetSection(CexConfigSection.SectionName).Get<CexConfigSection>();
 
     // Add services to the container.
-    builder.Services.AddTransient<IBitcoinQueryService>(_ =>
+    builder.Services.AddTransient<IBitcoinDataMapper, BitcoinDataMapper>();
+    builder.Services.AddTransient<IBitcoinQueryService>(serviceProvider =>
     {
+        var bitcoinDataMapper = serviceProvider.GetRequiredService<IBitcoinDataMapper>();
         // If something went wrong with the config section - throw it up!
         if (cexConfigSection is { BaseUrl: { }, FirstCurrency: { }, SecondCurrency: { } })
         {
-            return new BitcoinQueryService(logger, cexConfigSection.BaseUrl, cexConfigSection.Timeout,
+            return new BitcoinQueryService(logger, bitcoinDataMapper, cexConfigSection.BaseUrl,
+                cexConfigSection.Timeout,
                 cexConfigSection.FirstCurrency, cexConfigSection.SecondCurrency);
         }
 

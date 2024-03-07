@@ -15,8 +15,7 @@ namespace BitcoinQuery.DesktopClient.Rest
         protected readonly int MaxPingAttempts;
         protected readonly string PingUrl;
         protected readonly int ServerPingTimeout;
-
-
+        
         public BaseRestClientService(AppConfig appConfig)
         {
             BaseUrl = appConfig.BaseServerUri;
@@ -25,8 +24,7 @@ namespace BitcoinQuery.DesktopClient.Rest
             MaxPingAttempts = appConfig.MaxPingAttempts;
             ServerPingTimeout = appConfig.ServerPingTimeout;
         }
-
-
+        
         protected T GetContent<T>(RestResponseBase response)
         {
             CheckResponse(response);
