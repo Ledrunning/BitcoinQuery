@@ -3,7 +3,38 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:userControls="clr-namespace:BitcoinQuery.DesktopClient.View.UserControls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid />
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <userControls:BitcoinDataTable Grid.Column="0" Grid.Row="0" />
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" HorizontalAlignment="Center" Content="Start date"/>
+            <DatePicker Grid.Row="1" />
+            <Label Grid.Row="2" HorizontalAlignment="Center" Content="End date"/>
+            <DatePicker Grid.Row="3" />
+            <Label Grid.Row="4" HorizontalAlignment="Center" Content="average price"/>
+            <TextBox Grid.Row="5" Height="30" Text="34567"/>
+            <Button Grid.Row="6" Width="100" Height="30" Content="Calculate" />
+        </Grid>
+    </Grid>
+
 </Window>

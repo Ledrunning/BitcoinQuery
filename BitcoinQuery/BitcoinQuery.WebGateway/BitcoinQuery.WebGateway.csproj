@@ -17,4 +17,8 @@
     <ProjectReference Include="..\BitcoinQuery.Service\BitcoinQuery.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

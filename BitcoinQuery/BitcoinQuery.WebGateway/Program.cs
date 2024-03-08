@@ -1,11 +1,15 @@
 using System.Diagnostics;
-using BitcoinQuery.Service.Conrtacts;
+using BitcoinQuery.Service.Contracts;
 using BitcoinQuery.Service.Exceptions;
 using BitcoinQuery.Service.Mapper;
-using BitcoinQuery.Service.RestService;
+using BitcoinQuery.Service.Service;
+using BitcoinQuery.Service.Service.RestService;
 using BitcoinQuery.WebGateway.Configuration;
+using BitcoinQuery.WebGateway.Extensions;
+using Microsoft.Extensions.Caching.Memory;
 using NLog;
 using NLog.Web;
+using ILogger = NLog.ILogger;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 const string loggerConfig = "NLog.config";
@@ -21,14 +25,17 @@ try
     var cexConfigSection = builder.Configuration.GetSection(CexConfigSection.SectionName).Get<CexConfigSection>();
 
     // Add services to the container.
+    builder.ConfigureLogging();
     builder.Services.AddTransient<IBitcoinDataMapper, BitcoinDataMapper>();
+    builder.Services.AddTransient<IDataCachingService, DataCachingService>();
     builder.Services.AddTransient<IBitcoinQueryService>(serviceProvider =>
     {
         var bitcoinDataMapper = serviceProvider.GetRequiredService<IBitcoinDataMapper>();
+        var ñachingService = serviceProvider.GetRequiredService<IDataCachingService>();
         // If something went wrong with the config section - throw it up!
         if (cexConfigSection is { BaseUrl: { }, FirstCurrency: { }, SecondCurrency: { } })
         {
-            return new BitcoinQueryService(logger, bitcoinDataMapper, cexConfigSection.BaseUrl,
+            return new BitcoinQueryService(logger, bitcoinDataMapper, ñachingService, cexConfigSection.BaseUrl,
                 cexConfigSection.Timeout,
                 cexConfigSection.FirstCurrency, cexConfigSection.SecondCurrency);
         }
@@ -36,6 +43,7 @@ try
         throw new BitcoinQueryServiceException("Configuration error or invalid file! Check the appsettings.json file.");
     });
 
+    builder.Services.AddMemoryCache();
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();

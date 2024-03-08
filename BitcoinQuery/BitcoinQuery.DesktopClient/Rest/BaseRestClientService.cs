@@ -32,7 +32,7 @@ namespace BitcoinQuery.DesktopClient.Rest
             if (response.Content == null)
             {
                 throw new RestClientServiceException(
-                    $"Response from service is failed. Content is null: {response.StatusCode}, {response.ErrorMessage}");
+                    $"Response from BitcoinQuery.WebGateway is failed. Content is null: {response.StatusCode}, {response.ErrorMessage}");
             }
 
             var model = JsonConvert.DeserializeObject<T>(response.Content);
@@ -42,7 +42,7 @@ namespace BitcoinQuery.DesktopClient.Rest
             }
 
             throw new RestClientServiceException(
-                $"Response from service is failed. Status code: {response.StatusCode}, {response.ErrorMessage}");
+                $"Response from BitcoinQuery.WebGateway is failed. Status code: {response.StatusCode}, {response.ErrorMessage}");
         }
 
         protected void CheckResponse(RestResponseBase response)
@@ -50,13 +50,13 @@ namespace BitcoinQuery.DesktopClient.Rest
             if (!response.IsSuccessful)
             {
                 throw new RestClientServiceException(
-                    $"Response from service is failed. Status code: {response.StatusCode}, {response.ErrorMessage}");
+                    $"Response from BitcoinQuery.WebGateway is failed. Status code: {response.StatusCode}, {response.ErrorMessage}");
             }
 
             if (response.Content == null)
             {
                 throw new RestClientServiceException(
-                    $"Response from service is failed. Status code: {response.StatusCode}, {response.ErrorMessage}");
+                    $"Response from BitcoinQuery.WebGateway is failed. Status code: {response.StatusCode}, {response.ErrorMessage}");
             }
         }
 

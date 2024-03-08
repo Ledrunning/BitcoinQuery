@@ -1,4 +1,4 @@
-﻿using BitcoinQuery.Service.Conrtacts;
+﻿using BitcoinQuery.Service.Contracts;
 using BitcoinQuery.Service.Dto;
 using BitcoinQuery.Service.Models;
 
