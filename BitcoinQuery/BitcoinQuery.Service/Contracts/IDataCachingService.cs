@@ -4,6 +4,6 @@ namespace BitcoinQuery.Service.Contracts;
 
 public interface IDataCachingService
 {
-    void SaveDataToCache(List<BitcoinData>? yourData);
-    List<BitcoinData>? GetLatestDataFromCache();
+    void SaveDataToCache(List<DataPoint>? yourData);
+    List<DataPoint>? GetLatestDataFromCache();
 }

@@ -12,17 +12,11 @@ namespace BitcoinQuery.DesktopClient.Rest
     {
         private readonly int _timeout;
         protected readonly string BaseUrl;
-        protected readonly int MaxPingAttempts;
-        protected readonly string PingUrl;
-        protected readonly int ServerPingTimeout;
         
         public BaseRestClientService(AppConfig appConfig)
         {
             BaseUrl = appConfig.BaseServerUri;
             _timeout = appConfig.Timeout;
-            PingUrl = appConfig.ServerPingUri;
-            MaxPingAttempts = appConfig.MaxPingAttempts;
-            ServerPingTimeout = appConfig.ServerPingTimeout;
         }
         
         protected T GetContent<T>(RestResponseBase response)

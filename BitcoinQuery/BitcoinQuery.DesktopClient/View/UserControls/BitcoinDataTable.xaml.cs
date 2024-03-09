@@ -13,7 +13,7 @@ namespace BitcoinQuery.DesktopClient.View.UserControls
         public BitcoinDataTable()
         {
             InitializeComponent();
-            DataContext = AutofacConfigure.Container.Resolve<BitcoinDataTableViwModel>();
+            DataContext = AutofacConfigure.Container.Resolve<BitcoinDataTableViewModel>();
         }
     }
 }

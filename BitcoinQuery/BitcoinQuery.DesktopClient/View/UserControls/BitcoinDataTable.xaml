@@ -10,7 +10,21 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" />
+        <DataGrid Grid.Row="0" ItemsSource="{Binding AllBitcoinData}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Last Price" Binding="{Binding LastPrice}" />
+                <DataGridTextColumn Header="First Currency" Binding="{Binding FirstCurrency}" />
+                <DataGridTextColumn Header="Second Currency" Binding="{Binding SecondCurrency}" />
+                <DataGridTextColumn Header="Timestamp" Binding="{Binding FormattedTimestamp}" />
+                <!-- Hide Timestamp -->
+                <DataGridTextColumn Binding="{Binding Timestamp}" Visibility="Hidden" />
+                <DataGridTextColumn Header="Open" Binding="{Binding Open}" />
+                <DataGridTextColumn Header="High" Binding="{Binding High}" />
+                <DataGridTextColumn Header="Low" Binding="{Binding Low}" />
+                <DataGridTextColumn Header="Close" Binding="{Binding Close}" />
+                <DataGridTextColumn Header="Volume" Binding="{Binding Volume}" />
+            </DataGrid.Columns>
+        </DataGrid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />

@@ -9,9 +9,7 @@ namespace BitcoinQuery.Service.Service.RestService;
 
 public class BitcoinQueryService : BaseService, IBitcoinQueryService
 {
-    private const short FirstDayOfMonth = 1;
-    private const short OneMonth = 1;
-    private const short DecreaseForLastDayInCurrentMonth = -1;
+    private const short DecreaseOneMonth = -1;
     private readonly IDataCachingService _cachingService;
     private readonly IBitcoinDataMapper _dataMapper;
 
@@ -65,36 +63,35 @@ public class BitcoinQueryService : BaseService, IBitcoinQueryService
 
     /// <summary>
     ///     Method of obtaining data for the last month
-    /// TODO: To update manually use MemoryCache!
     /// </summary>
-    /// <param name="isManualUpdate"></param>
     /// <param name="token"></param>
     /// <returns></returns>
     /// <exception cref="BitcoinQueryServiceException"></exception>
-    public async Task<List<BitcoinData>?> GetDataFromRangeAsync(bool isManualUpdate, CancellationToken token)
+    public async Task<List<DataPoint>?> GetDataFromRangeAsync(CancellationToken token)
     {
         GetDateRange(out var startDate, out var endDate);
 
-        var dataPerDay = new List<BitcoinData>();
+        var dataPerDay = new List<DataPoint>();
         for (var date = startDate; date <= endDate; date = date.AddDays(1))
         {
             var dailyData = await GetDailyDataAsync(date.ToString("yyyyMMdd"), token);
             var lastPrice = await GetLastPriceAsync(token);
-            var mappedData = _dataMapper.Map(dailyData, lastPrice);
+            var mappedData = _dataMapper.MapToDataPoints(dailyData.DataPerDay, lastPrice);
 
-            dataPerDay.Add(mappedData);
+            dataPerDay.AddRange(mappedData);
         }
 
+        // In order not to send unnecessary requests to the server, we will work with memory cache
         _cachingService.SaveDataToCache(dataPerDay);
 
-        return isManualUpdate ? _cachingService.GetLatestDataFromCache() : dataPerDay;
+        return dataPerDay;
     }
 
     private static void GetDateRange(out DateTime startDate, out DateTime endDate)
     {
-        startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, FirstDayOfMonth);
-        endDate = startDate.AddMonths(OneMonth).AddDays(DecreaseForLastDayInCurrentMonth);
-        //startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, FirstDayOfMonth).AddMonths(-1); 
-        //endDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, FirstDayOfMonth).AddDays(DecreaseForLastDayInCurrentMonth); 
+        var today = DateTime.Today;
+
+        startDate = today.AddMonths(DecreaseOneMonth);
+        endDate = today;
     }
 }

@@ -23,7 +23,7 @@ public class DataCachingService : IDataCachingService
         _logger = logger;
     }
 
-    public void SaveDataToCache(List<BitcoinData>? yourData)
+    public void SaveDataToCache(List<DataPoint>? yourData)
     {
         var cacheEntryOptions = new MemoryCacheEntryOptions()
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)); // Настройте время жизни кэша по вашему усмотрению
@@ -32,9 +32,9 @@ public class DataCachingService : IDataCachingService
         _memoryCache.Set("LatestData", yourData, cacheEntryOptions);
     }
 
-    public List<BitcoinData>? GetLatestDataFromCache()
+    public List<DataPoint>? GetLatestDataFromCache()
     {
-        if (_memoryCache.TryGetValue("LatestData", out List<BitcoinData>? cachedData))
+        if (_memoryCache.TryGetValue("LatestData", out List<DataPoint>? cachedData))
         {
             _logger.LogInformation("Retrieving the latest data from the cache memory");
             return cachedData;

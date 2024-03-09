@@ -32,8 +32,8 @@ public class BitcoinPriceController : ControllerBase
 
     [HttpGet]
     [Route(nameof(GetDataFromRange))]
-    public async Task<List<BitcoinData>?> GetDataFromRange(bool isManuallyUpdate, CancellationToken token)
+    public async Task<List<DataPoint>?> GetDataFromRange(CancellationToken token)
     {
-        return await _bitcoinQueryService.GetDataFromRangeAsync(isManuallyUpdate, token);
+        return await _bitcoinQueryService.GetDataFromRangeAsync(token);
     }
 }

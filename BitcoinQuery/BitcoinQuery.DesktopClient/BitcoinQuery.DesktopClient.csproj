@@ -130,7 +130,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModel\BitcoinDataTableViwModel.cs" />
+    <Compile Include="Contracts\IBitcoinRestClientService.cs" />
+    <Compile Include="Extensions\DateTimeExtension.cs" />
+    <Compile Include="Model\DataPoint.cs" />
+    <Compile Include="Rest\BitcoinRestClientService.cs" />
+    <Compile Include="ViewModel\BitcoinDataTableViewModel.cs" />
     <Compile Include="View\UserControls\BitcoinDataTable.xaml.cs">
       <DependentUpon>BitcoinDataTable.xaml</DependentUpon>
     </Compile>
@@ -193,9 +197,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

@@ -20,17 +20,17 @@ public class BitcoinDataMapper : IBitcoinDataMapper
             // Map Time
             Timestamp = bitcoinData.Time,
             // Map DataPerMinute
-            MinuteData = MapDataPoints(bitcoinData.DataPerMinute, priceData),
+            MinuteData = MapToDataPoints(bitcoinData.DataPerMinute, priceData),
             // Map DataPerHour
-            HourData = MapDataPoints(bitcoinData.DataPerHour, priceData),
+            HourData = MapToDataPoints(bitcoinData.DataPerHour, priceData),
             // Map DataPerDay
-            DayData = MapDataPoints(bitcoinData.DataPerDay, priceData)
+            DayData = MapToDataPoints(bitcoinData.DataPerDay, priceData)
         };
 
         return mappedData;
     }
 
-    private List<DataPoint> MapDataPoints(double[][]? data, BitcoinPriceData priceData)
+    public List<DataPoint> MapToDataPoints(double[][]? data, BitcoinPriceData priceData)
     {
         if (data == null)
         {

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinQuery.DesktopClient"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitcoinQuery.WebGateway", "BitcoinQuery.WebGateway\BitcoinQuery.WebGateway.csproj", "{B3BF938D-9E91-4D05-B91E-01F6BCE60221}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinQuery.Service", "BitcoinQuery.Service\BitcoinQuery.Service.csproj", "{6E4B03B6-164F-485A-9538-C41FCD155604}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitcoinQuery.Service", "BitcoinQuery.Service\BitcoinQuery.Service.csproj", "{6E4B03B6-164F-485A-9538-C41FCD155604}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
