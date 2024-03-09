@@ -1,5 +1,6 @@
 using BitcoinQuery.Service.Contracts;
 using BitcoinQuery.Service.Dto;
+using BitcoinQuery.Service.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BitcoinQuery.WebGateway.Controllers;
@@ -19,20 +20,20 @@ public class BitcoinPriceController : ControllerBase
     [Route(nameof(GetLastPrice))]
     public async Task<BitcoinPriceData> GetLastPrice(CancellationToken token)
     {
-        return await _bitcoinQueryService.GetLastPrice(token);
+        return await _bitcoinQueryService.GetLastPriceAsync(token);
     }
 
     [HttpGet]
     [Route(nameof(GetDailyData))]
     public async Task<BitcoinDailyData> GetDailyData(string date, CancellationToken token)
     {
-        return await _bitcoinQueryService.GetDailyData(date, token);
+        return await _bitcoinQueryService.GetDailyDataAsync(date, token);
     }
 
     [HttpGet]
     [Route(nameof(GetDataFromRange))]
-    public async Task<List<double[][]>> GetDataFromRange(CancellationToken token)
+    public async Task<List<BitcoinData>?> GetDataFromRange(bool isManuallyUpdate, CancellationToken token)
     {
-        return await _bitcoinQueryService.GetDataFromRange(token);
+        return await _bitcoinQueryService.GetDataFromRangeAsync(isManuallyUpdate, token);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BitcoinQuery.Service.Contracts;
+using BitcoinQuery.Service.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
@@ -22,7 +23,7 @@ public class DataCachingService : IDataCachingService
         _logger = logger;
     }
 
-    public void SaveDataToCacheAsync(List<double[][]>? yourData)
+    public void SaveDataToCache(List<BitcoinData>? yourData)
     {
         var cacheEntryOptions = new MemoryCacheEntryOptions()
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)); // Настройте время жизни кэша по вашему усмотрению
@@ -31,9 +32,9 @@ public class DataCachingService : IDataCachingService
         _memoryCache.Set("LatestData", yourData, cacheEntryOptions);
     }
 
-    public List<double[][]>? GetLatestDataFromCacheAsync()
+    public List<BitcoinData>? GetLatestDataFromCache()
     {
-        if (_memoryCache.TryGetValue("LatestData", out List<double[][]>? cachedData))
+        if (_memoryCache.TryGetValue("LatestData", out List<BitcoinData>? cachedData))
         {
             _logger.LogInformation("Retrieving the latest data from the cache memory");
             return cachedData;

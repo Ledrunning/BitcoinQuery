@@ -2,6 +2,9 @@
 
 public class DataPoint
 {
+    public string? LastPrice { get; set; }
+    public string? FirstCurrency { get; set; }
+    public string? SecondCurrency { get; set; }
     public long Timestamp { get; set; }
     public double Open { get; set; }
     public double High { get; set; }

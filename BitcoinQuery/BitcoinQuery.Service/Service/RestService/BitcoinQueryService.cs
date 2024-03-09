@@ -1,6 +1,7 @@
 ﻿using BitcoinQuery.Service.Contracts;
 using BitcoinQuery.Service.Dto;
 using BitcoinQuery.Service.Exceptions;
+using BitcoinQuery.Service.Models;
 using NLog;
 using RestSharp;
 
@@ -28,7 +29,7 @@ public class BitcoinQueryService : BaseService, IBitcoinQueryService
     /// </summary>
     /// <param name="token"></param>
     /// <returns>BitcoinPriceData current price</returns>
-    public async Task<BitcoinPriceData> GetLastPrice(CancellationToken token)
+    public async Task<BitcoinPriceData> GetLastPriceAsync(CancellationToken token)
     {
         var endPoint = $"last_price/{FirstCurrency}/{SecondCurrency}";
         var request = new RestRequest(endPoint);
@@ -52,50 +53,48 @@ public class BitcoinQueryService : BaseService, IBitcoinQueryService
     /// <param name="date"></param>
     /// <param name="token"></param>
     /// <returns>BitcoinDailyData with list of daily prices</returns>
-    public async Task<BitcoinDailyData> GetDailyData(string date, CancellationToken token)
+    public async Task<BitcoinDailyData> GetDailyDataAsync(string date, CancellationToken token)
     {
         var endPoint = $"ohlcv/hd/{date}/{FirstCurrency}/{SecondCurrency}";
         var request = new RestRequest(endPoint);
         var response = await RestClient.ExecuteAsync(request, token);
-        var receivedData = GetContent<BitcoinDailyData>(response, new Uri($"{BaseUrl}{endPoint}").AbsoluteUri);
+        var receivedData = GetDailyDataContent(response, new Uri($"{BaseUrl}{endPoint}").AbsoluteUri);
 
         return receivedData;
     }
 
     /// <summary>
     ///     Method of obtaining data for the last month
+    /// TODO: To update manually use MemoryCache!
     /// </summary>
+    /// <param name="isManualUpdate"></param>
     /// <param name="token"></param>
     /// <returns></returns>
     /// <exception cref="BitcoinQueryServiceException"></exception>
-    public async Task<List<double[][]>> GetDataFromRange(CancellationToken token)
+    public async Task<List<BitcoinData>?> GetDataFromRangeAsync(bool isManualUpdate, CancellationToken token)
     {
         GetDateRange(out var startDate, out var endDate);
 
-        var dataPerDay = new List<double[][]>();
+        var dataPerDay = new List<BitcoinData>();
         for (var date = startDate; date <= endDate; date = date.AddDays(1))
         {
-            var dailyData = await GetDailyData(date.ToString("yyyyMMdd"), token);
-            if (dailyData.DataPerDay != null)
-            {
-                dataPerDay.Add(dailyData.DataPerDay);
-            }
+            var dailyData = await GetDailyDataAsync(date.ToString("yyyyMMdd"), token);
+            var lastPrice = await GetLastPriceAsync(token);
+            var mappedData = _dataMapper.Map(dailyData, lastPrice);
+
+            dataPerDay.Add(mappedData);
         }
 
-        _cachingService.SaveDataToCacheAsync(dataPerDay);
-        var resultData = _cachingService.GetLatestDataFromCacheAsync();
-        if (resultData != null)
-        {
-            return resultData;
-        }
+        _cachingService.SaveDataToCache(dataPerDay);
 
-        Logger.Error($"{nameof(BitcoinQueryService)}: Bitcoin data per day is null");
-        throw new BitcoinQueryServiceException($"{nameof(BitcoinQueryService)}: Bitcoin data per day is null");
+        return isManualUpdate ? _cachingService.GetLatestDataFromCache() : dataPerDay;
     }
 
     private static void GetDateRange(out DateTime startDate, out DateTime endDate)
     {
         startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, FirstDayOfMonth);
         endDate = startDate.AddMonths(OneMonth).AddDays(DecreaseForLastDayInCurrentMonth);
+        //startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, FirstDayOfMonth).AddMonths(-1); 
+        //endDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, FirstDayOfMonth).AddDays(DecreaseForLastDayInCurrentMonth); 
     }
 }

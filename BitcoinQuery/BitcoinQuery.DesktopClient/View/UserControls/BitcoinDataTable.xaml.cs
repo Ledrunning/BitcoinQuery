@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using Autofac;
+using BitcoinQuery.DesktopClient.DiSetup;
+using BitcoinQuery.DesktopClient.ViewModel;
+using System.Windows.Controls;
 
 namespace BitcoinQuery.DesktopClient.View.UserControls
 {
@@ -10,6 +13,7 @@ namespace BitcoinQuery.DesktopClient.View.UserControls
         public BitcoinDataTable()
         {
             InitializeComponent();
+            DataContext = AutofacConfigure.Container.Resolve<BitcoinDataTableViwModel>();
         }
     }
 }

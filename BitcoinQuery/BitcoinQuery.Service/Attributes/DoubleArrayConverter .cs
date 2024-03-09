@@ -7,10 +7,10 @@ namespace BitcoinQuery.Service.Attributes;
 /// </summary>
 public class DoubleArrayConverter : JsonConverter<double[][]>
 {
-    public override double[][] ReadJson(JsonReader reader, Type objectType, double[][] existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public override double[][]? ReadJson(JsonReader reader, Type objectType, double[][] existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
         var data = (string)reader.Value;
-        var array = JsonConvert.DeserializeObject<double[][]>(data);
+        var array = JsonConvert.DeserializeObject<double[][]?>(data);
         return array;
     }
 

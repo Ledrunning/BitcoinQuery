@@ -3,6 +3,7 @@ using Autofac;
 using BitcoinQuery.DesktopClient.Contracts;
 using BitcoinQuery.DesktopClient.Logger;
 using BitcoinQuery.DesktopClient.View;
+using BitcoinQuery.DesktopClient.View.UserControls;
 using BitcoinQuery.DesktopClient.ViewModel;
 using NLog;
 
@@ -24,6 +25,8 @@ namespace BitcoinQuery.DesktopClient.DiSetup
 
                 builder.RegisterType<MainWindow>().InstancePerDependency();
                 builder.RegisterType<MainViewModel>().InstancePerDependency();
+                builder.RegisterType<BitcoinDataTable>().InstancePerDependency();
+                builder.RegisterType<BitcoinDataTableViwModel>().InstancePerDependency();
 
                 Container = builder.Build();
             }

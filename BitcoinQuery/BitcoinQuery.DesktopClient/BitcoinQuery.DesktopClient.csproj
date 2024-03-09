@@ -130,6 +130,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\BitcoinDataTableViwModel.cs" />
     <Compile Include="View\UserControls\BitcoinDataTable.xaml.cs">
       <DependentUpon>BitcoinDataTable.xaml</DependentUpon>
     </Compile>

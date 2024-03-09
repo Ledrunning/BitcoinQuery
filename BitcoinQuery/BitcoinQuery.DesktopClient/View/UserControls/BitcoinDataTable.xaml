@@ -17,8 +17,10 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Width="100" Height="30" Content="Update" HorizontalAlignment="Left" Margin="7,0,0,0" />
-            <Label Grid.Column="1">12.03.2027</Label>
+            <Button Grid.Column="0" Width="100" Height="30" Content="Update" 
+                    HorizontalAlignment="Left" Margin="7,0,0,0" 
+                    Command="{Binding UpdateCommand}"/>
+            <Label Grid.Column="1" Content="{Binding LastTimeUpdateText}" />
             <Label Grid.Column="2" Content="Time of last update"/>
         </Grid>
     </Grid>

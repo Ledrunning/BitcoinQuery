@@ -13,24 +13,24 @@ public class BitcoinDataMapper : IBitcoinDataMapper
     private const short CloseIndex = 4;
     private const short VolumeIndex = 5;
 
-    public BitcoinData Map(BitcoinDailyData bitcoinData)
+    public BitcoinData Map(BitcoinDailyData bitcoinData, BitcoinPriceData priceData)
     {
         var mappedData = new BitcoinData
         {
             // Map Time
             Timestamp = bitcoinData.Time,
             // Map DataPerMinute
-            MinuteData = MapDataPoints(bitcoinData.DataPerMinute),
+            MinuteData = MapDataPoints(bitcoinData.DataPerMinute, priceData),
             // Map DataPerHour
-            HourData = MapDataPoints(bitcoinData.DataPerHour),
+            HourData = MapDataPoints(bitcoinData.DataPerHour, priceData),
             // Map DataPerDay
-            DayData = MapDataPoints(bitcoinData.DataPerDay)
+            DayData = MapDataPoints(bitcoinData.DataPerDay, priceData)
         };
 
         return mappedData;
     }
 
-    private List<DataPoint> MapDataPoints(double[][]? data)
+    private List<DataPoint> MapDataPoints(double[][]? data, BitcoinPriceData priceData)
     {
         if (data == null)
         {
@@ -39,6 +39,9 @@ public class BitcoinDataMapper : IBitcoinDataMapper
 
         return data.Select(d => new DataPoint
         {
+            LastPrice = priceData.LastPrice,
+            FirstCurrency = priceData.FirstCurrency,
+            SecondCurrency = priceData.SecondCurrency,
             Timestamp = (long)d[TimestampIndex],
             Open = d[OpenIndex],
             High = d[HighIndex],

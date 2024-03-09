@@ -5,5 +5,5 @@ namespace BitcoinQuery.Service.Contracts;
 
 public interface IBitcoinDataMapper
 {
-    BitcoinData Map(BitcoinDailyData bitcoinData);
+    BitcoinData Map(BitcoinDailyData bitcoinData, BitcoinPriceData priceData);
 }
