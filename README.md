@@ -10,7 +10,7 @@ For more flexibility and scalability, as well as future support, the application
 
 Unit tests are provided for critical areas of server services, and some tests are included for the client-side. Standard REST API methods are used for data exchange between the client and server. To update data once a day, the Hangfire task manager is utilized on the server-side, and to update content on the client, a PUSH messaging method from the server is employed. This method notifies the client-side, which then requests new data via REST API from the server.
 
-Given the nature of this test project, no data access layers, UnitOfWorks, or repositories are implemented, and database handling is omitted. However, adding a database such as CosmosDB would be straightforward when scaling. Data retrieved from cex.io is stored in memory cache, which aids in calculating the average value of Bitcoin closing without unnecessary requests to the cex.io server. Hangfire InMemory library is used to store task manager data. All applications are highly configurable via configuration files.
+Given the nature of this test project, no data access layers, UnitOfWorks, or repositories are implemented, and database handling is omitted. However, adding a database such as CosmosDB would be straightforward when scaling. Also, I did not add any authorization methods (Basic, JToken e.g) in this test task project. Data retrieved from cex.io is stored in memory cache, which aids in calculating the average value of Bitcoin closing without unnecessary requests to the cex.io server. Hangfire InMemory library is used to store task manager data. All applications are highly configurable via configuration files.
 
 ## Client-side
 
