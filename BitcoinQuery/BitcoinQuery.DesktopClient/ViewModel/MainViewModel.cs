@@ -12,7 +12,6 @@ namespace BitcoinQuery.DesktopClient.ViewModel
     public class MainViewModel : BaseViewModel
     {
         private readonly IBitcoinRestClientService _bitcoinRestClientService;
-        private readonly ISignalRService _signalRService;
         private readonly INLogLogger _logger;
         private readonly CancellationToken _token;
 
@@ -20,34 +19,18 @@ namespace BitcoinQuery.DesktopClient.ViewModel
         private DateTime _endDate;
         private DateTime _startDate;
 
-        public MainViewModel(IBitcoinRestClientService bitcoinRestClientService, ISignalRService signalRService, INLogLogger logger,
-            CancellationToken token)
+        public MainViewModel(IBitcoinRestClientService bitcoinRestClientService, INLogLogger logger, CancellationToken token)
         {
             _bitcoinRestClientService = bitcoinRestClientService;
-            _signalRService = signalRService;
-            _signalRService.OnReceiveNotification += OnReceiveNotification;
             _logger = logger;
             _token = token;
             CalculateCommand = new RelayCommand(async () => await CalculateBitcoinData());
             _startDate = DateTime.Today;
             _endDate = DateTime.Today;
 
-            InitializeAsync();
-            ConnectToServer();
+            InitializeDatePickersAsync();
         }
-
-        private async void ConnectToServer()
-        {
-            await _signalRService.StartConnectionAsync(); 
-            _logger.Info("Connected to server.", null);
-        }
-
-        private void OnReceiveNotification(string message)
-        {
-            InitializeAsync();
-            _logger.Info($"Received notification: {message}", null);
-        }
-
+        
         public ICommand CalculateCommand { get; }
 
         public DateTime StartDate
@@ -87,7 +70,7 @@ namespace BitcoinQuery.DesktopClient.ViewModel
             }
         }
 
-        private async void InitializeAsync()
+        private async void InitializeDatePickersAsync()
         {
             try
             {

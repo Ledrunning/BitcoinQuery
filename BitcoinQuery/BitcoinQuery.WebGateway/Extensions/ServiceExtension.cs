@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using BitcoinQuery.WebGateway.Autorization;
 using Hangfire;
+using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
 using NLog;
 using NLog.Web;
@@ -22,6 +24,7 @@ public static class ServiceExtension
     /// <summary>
     ///     NOTE! In this case, I am using memory
     ///     as there is no need to implement any databases in this test case.
+    ///     https://localhost:7186/hangfire - Dashboard
     /// </summary>
     /// <param name="builder"></param>
     public static void ConfigureHangFire(this WebApplicationBuilder builder)
@@ -32,6 +35,7 @@ public static class ServiceExtension
             .UseRecommendedSerializerSettings()
             .UseMemoryStorage());
 
+        builder.Services.AddSingleton<IDashboardAuthorizationFilter, HangfireAuthorizationFilter>();
         builder.Services.AddHangfireServer();
     }
 }

@@ -39,8 +39,8 @@ namespace BitcoinQuery.DesktopClient.DiSetup
 
                 builder.RegisterType<SignalRService>()
                     .As<ISignalRService>()
-                    .WithParameter("hubUrl", loadedConfiguration.ServerPushUri)
-                    .WithParameter("logger", Container.Resolve<INLogLogger>())
+                    .WithParameter("serverPushUrl", loadedConfiguration.ServerPushUri)
+                    .WithParameter("logger", new NLogLogger())
                     .InstancePerDependency();
 
                 builder.RegisterType<MainWindow>().InstancePerDependency();

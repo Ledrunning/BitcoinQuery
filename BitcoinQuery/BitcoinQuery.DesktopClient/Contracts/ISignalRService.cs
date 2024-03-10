@@ -8,5 +8,6 @@ namespace BitcoinQuery.DesktopClient.Contracts
         event Action<string> OnReceiveNotification;
         Task StartConnectionAsync();
         Task StopConnectionAsync();
+        Task SendNotificationAsync(string message);
     }
 }

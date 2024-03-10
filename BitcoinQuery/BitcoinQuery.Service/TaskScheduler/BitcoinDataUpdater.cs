@@ -8,24 +8,23 @@ public class BitcoinDataUpdater
     private readonly IBitcoinQueryService _bitcoinRestClientService;
     private readonly ILogger<BitcoinDataUpdater> _logger;
     private readonly INotificationHub _notificationHub;
-    private readonly CancellationToken _token;
 
     public BitcoinDataUpdater(IBitcoinQueryService bitcoinRestClientService, INotificationHub notificationHub,
-        ILogger<BitcoinDataUpdater> logger, CancellationToken token)
+        ILogger<BitcoinDataUpdater> logger)
     {
         _bitcoinRestClientService = bitcoinRestClientService;
         _notificationHub = notificationHub;
         _logger = logger;
-        _token = token;
     }
 
-    public async void UpdateBitcoinData()
+    public async Task UpdateBitcoinData(CancellationToken token)
     {
         try
         {
-            var data = await _bitcoinRestClientService.GetDataFromRangeAsync(_token);
+            var data = await _bitcoinRestClientService.GetDataFromRangeAsync(token);
             if (data is { Count: > 0 })
             {
+                
                 await _notificationHub.SendNotification("Bitcoin data has been successfully updated!");
             }
         }

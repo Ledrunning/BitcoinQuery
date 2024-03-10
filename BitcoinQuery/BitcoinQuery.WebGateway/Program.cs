@@ -6,9 +6,10 @@ using BitcoinQuery.Service.Push;
 using BitcoinQuery.Service.Service;
 using BitcoinQuery.Service.Service.RestService;
 using BitcoinQuery.Service.TaskScheduler;
+using BitcoinQuery.WebGateway.Autorization;
 using BitcoinQuery.WebGateway.Configuration;
 using BitcoinQuery.WebGateway.Extensions;
-using Microsoft.Extensions.DependencyInjection;
+using Hangfire;
 using NLog;
 using NLog.Web;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -44,21 +45,20 @@ try
         throw new BitcoinQueryServiceException("Configuration error or invalid file! Check the appsettings.json file.");
     });
 
+    builder.Services.AddSingleton<INotificationHub, NotificationHub>();
     //Configure task scheduler
+    builder.Services.AddTransient<BitcoinDataUpdater>();
+    builder.Services.AddTransient<BitcoinDataScheduler>();
     builder.ConfigureHangFire();
-    builder.Services.AddSingleton(serviceProvider =>
-    {
-        var service = serviceProvider.GetRequiredService<BitcoinDataScheduler>();
-        service.ScheduleBitcoinDataUpdate();
-        return service;
-    });
 
     builder.Services.AddSignalR();
+    
     builder.Services.AddMemoryCache();
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-
+    builder.Services.AddCors();
+    
     var app = builder.Build();
 
     if (app.Environment.IsDevelopment())
@@ -69,16 +69,21 @@ try
 
     app.UseHttpsRedirection();
 
-    app.UseAuthorization();
-
     app.MapControllers();
-
     app.UseRouting();
-
+    app.UseAuthorization();
     app.UseEndpoints(endpoints =>
     {
-        _ = endpoints.MapHub<NotificationHub>("/notificationHub");
+        _ = endpoints.MapHub<NotificationHub>("/newdatafire");
     });
+
+    app.UseHangfireDashboard("/hangfire", new DashboardOptions
+    {
+        Authorization = new[] { new HangfireAuthorizationFilter() }
+    });
+
+    var bitcoinDataScheduler = app.Services.GetRequiredService<BitcoinDataScheduler>();
+    bitcoinDataScheduler.ScheduleBitcoinDataUpdate(CancellationToken.None);
 
     logger.Info("Server has been started...");
     app.Run();
