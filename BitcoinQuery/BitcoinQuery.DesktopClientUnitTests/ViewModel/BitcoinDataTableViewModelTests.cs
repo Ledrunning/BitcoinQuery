@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BitcoinQuery.DesktopClient.Contracts;
 using BitcoinQuery.DesktopClient.Model;
+using BitcoinQuery.DesktopClient.Service;
 using BitcoinQuery.DesktopClient.ViewModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -14,6 +15,7 @@ namespace BitcoinQuery.DesktopClientUnitTests.ViewModel
     {
         private Mock<IBitcoinRestClientService> mockBitcoinRestClientService;
         private Mock<INLogLogger> mockNLogLogger;
+        private Mock<ISignalRService> signalRservice;
         private CancellationToken cancellationToken;
 
         [TestInitialize]
@@ -21,6 +23,7 @@ namespace BitcoinQuery.DesktopClientUnitTests.ViewModel
         {
             mockBitcoinRestClientService = new Mock<IBitcoinRestClientService>();
             mockNLogLogger = new Mock<INLogLogger>();
+            signalRservice = new Mock<ISignalRService>();
             cancellationToken = CancellationToken.None;
         }
 
@@ -30,6 +33,7 @@ namespace BitcoinQuery.DesktopClientUnitTests.ViewModel
             // Arrange
             var viewModel = new BitcoinDataTableViewModel(
                 mockBitcoinRestClientService.Object,
+                signalRservice.Object,
                 mockNLogLogger.Object,
                 cancellationToken);
 

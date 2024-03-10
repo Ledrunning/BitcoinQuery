@@ -5,6 +5,7 @@ using BitcoinQuery.DesktopClient.Configuration;
 using BitcoinQuery.DesktopClient.Contracts;
 using BitcoinQuery.DesktopClient.Logger;
 using BitcoinQuery.DesktopClient.Rest;
+using BitcoinQuery.DesktopClient.Service;
 using BitcoinQuery.DesktopClient.View;
 using BitcoinQuery.DesktopClient.View.UserControls;
 using BitcoinQuery.DesktopClient.ViewModel;
@@ -35,6 +36,12 @@ namespace BitcoinQuery.DesktopClient.DiSetup
 
                 builder.Register(ctx => new BitcoinRestClientService(loadedConfiguration))
                     .As<IBitcoinRestClientService>().InstancePerDependency();
+
+                builder.RegisterType<SignalRService>()
+                    .As<ISignalRService>()
+                    .WithParameter("serverPushUrl", loadedConfiguration.ServerPushUri)
+                    .WithParameter("logger", new NLogLogger())
+                    .InstancePerDependency();
 
                 builder.RegisterType<MainWindow>().InstancePerDependency();
                 builder.RegisterType<MainViewModel>().InstancePerDependency();

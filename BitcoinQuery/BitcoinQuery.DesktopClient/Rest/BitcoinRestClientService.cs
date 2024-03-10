@@ -30,5 +30,13 @@ namespace BitcoinQuery.DesktopClient.Rest
 
             return GetContent<DateRange>(response);
         }
+
+        public async Task<double> GetBitcoinClosingAverage(long startDate, long endDate, CancellationToken token)
+        {
+            var url = new Uri($"{BaseUrl}/GetBitcoinClosingAverage?startDate={startDate}&endDate={endDate}");
+            var response = await SendRequestAsync(url, Method.Get, token);
+
+            return GetContent<double>(response);
+        }
     }
 }

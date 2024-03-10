@@ -78,13 +78,18 @@ public class BitcoinQueryService : BaseService, IBitcoinQueryService
             {
                 var dailyData = await GetDailyDataAsync(date.ToString("yyyyMMdd"), token);
                 var lastPrice = await GetLastPriceAsync(token);
-                var mappedData = _dataMapper.MapToDataPoints(dailyData.DataPerDay, lastPrice);
+                var mappedData = _dataMapper.MapToDataPoints(dailyData.DataPerDay, dailyData.Time, lastPrice);
 
-                dataPerDay.AddRange(mappedData);
+                var filteredData = FilterLastMonthData(resultDateRange, mappedData);
+
+                dataPerDay.AddRange(filteredData);
             }
 
             // In order not to send unnecessary requests to the server, we will work with memory cache
-            _cachingService.SaveDataToCache(dataPerDay);
+            if (dataPerDay.Count > 0)
+            {
+                _cachingService.SaveDataToCache(dataPerDay);
+            }
 
             return dataPerDay;
         }
@@ -104,5 +109,38 @@ public class BitcoinQueryService : BaseService, IBitcoinQueryService
             StartDate = today.AddMonths(DecreaseOneMonth),
             EndDate = today
         };
+    }
+
+    public double GetBitcoinClosingAverageFromRange(long startDate, long endDate)
+    {
+        var lastCachedData = _cachingService.GetLatestDataFromCache();
+        if (lastCachedData == null || lastCachedData.Count == 0)
+        {
+            return 0;
+        }
+
+        var filteredData = lastCachedData.Where(data => data.RequestTime >= startDate && data.RequestTime <= endDate)
+            .ToList();
+        if (filteredData.Count == 0)
+        {
+            return 0;
+        }
+
+        var bitcoinCloseSum = filteredData.Sum(data => data.Close);
+        var bitcoinCloseAverage = bitcoinCloseSum / filteredData.Count;
+        return bitcoinCloseAverage;
+    }
+
+    private static IEnumerable<DataPoint> FilterLastMonthData(DateRange resultDateRange, List<DataPoint> mappedData)
+    {
+        //Filtering for last chosen month, because I found data in JSON f.e from 4 month ago
+        var startDateTimestamp = long.Parse(resultDateRange.StartDate.ToString("yyyyMMdd"));
+        var endDateTimestamp = long.Parse(resultDateRange.EndDate.ToString("yyyyMMdd"));
+
+        var filteredData = mappedData
+            .Where(data => data.RequestTime >= startDateTimestamp && data.RequestTime <= endDateTimestamp)
+            .ToList();
+
+        return filteredData;
     }
 }

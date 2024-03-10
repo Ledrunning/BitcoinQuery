@@ -5,6 +5,6 @@ namespace BitcoinQuery.Service.Contracts;
 
 public interface IBitcoinDataMapper
 {
-    BitcoinData Map(BitcoinDailyData bitcoinData, BitcoinPriceData priceData);
-    List<DataPoint> MapToDataPoints(double[][]? data, BitcoinPriceData priceData);
+    BitcoinData Map(BitcoinDailyData bitcoinData, long requestTime, BitcoinPriceData priceData);
+    List<DataPoint> MapToDataPoints(double[][]? data, long requestTime, BitcoinPriceData priceData);
 }

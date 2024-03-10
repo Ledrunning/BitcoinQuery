@@ -8,5 +8,7 @@ namespace BitcoinQuery.DesktopClient.Contracts
     public interface IBitcoinRestClientService
     {
         Task<IReadOnlyList<DataPoint>> GetDataFromRangeAsync(CancellationToken token);
+        Task<DateRange> GetDateTimeRange(CancellationToken token);
+        Task<double> GetBitcoinClosingAverage(long startDate, long endDate, CancellationToken token);
     }
 }

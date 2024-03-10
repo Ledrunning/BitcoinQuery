@@ -26,7 +26,7 @@ public class DataCachingService : IDataCachingService
     public void SaveDataToCache(List<DataPoint>? yourData)
     {
         var cacheEntryOptions = new MemoryCacheEntryOptions()
-            .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)); // Настройте время жизни кэша по вашему усмотрению
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(Day)); // Настройте время жизни кэша по вашему усмотрению
 
         _logger.LogInformation("The latest data has been stored in cache memory!");
         _memoryCache.Set("LatestData", yourData, cacheEntryOptions);

@@ -16,17 +16,23 @@ namespace BitcoinQuery.DesktopClient.ViewModel
         private const string GermanyTimeStandart = "dd.MM.yyyy HH:mm:ss";
         private readonly IBitcoinRestClientService _bitcoinRestClientService;
         private readonly INLogLogger _logger;
+        private readonly ISignalRService _signalRService;
         private readonly CancellationToken _token;
         private ObservableCollection<DataPoint> _allBitcoinData = new ObservableCollection<DataPoint>();
         private string _lastTimeUpdateText;
 
-        public BitcoinDataTableViewModel(IBitcoinRestClientService bitcoinRestClientService, INLogLogger logger,
+        public BitcoinDataTableViewModel(IBitcoinRestClientService bitcoinRestClientService,
+            ISignalRService signalRService, INLogLogger logger,
             CancellationToken token)
         {
             _bitcoinRestClientService = bitcoinRestClientService;
+            _signalRService = signalRService;
+            _signalRService.OnReceiveNotification += OnReceiveNotification;
             _logger = logger;
             _token = token;
             UpdateCommand = new RelayCommand(async () => await UpdateBitcoinData());
+            ConnectToServer();
+            _ = GetAndUpdateBitcoinData();
         }
 
         public ICommand UpdateCommand { get; }
@@ -37,14 +43,37 @@ namespace BitcoinQuery.DesktopClient.ViewModel
             set => SetField(ref _lastTimeUpdateText, value, nameof(LastTimeUpdateText));
         }
 
-        //TODO add needed model
         public ObservableCollection<DataPoint> AllBitcoinData
         {
             get => _allBitcoinData;
             set => SetField(ref _allBitcoinData, value);
         }
 
+        /// <summary>
+        ///     Update data by server push message and Cron
+        /// </summary>
+        /// <param name="message"></param>
+        private async void OnReceiveNotification(string message)
+        {
+            // German standart 
+            LastTimeUpdateText = DateTime.Now.ToString(GermanyTimeStandart);
+            await _signalRService.SendNotificationAsync("Update!");
+            await GetAndUpdateBitcoinData();
+            _logger.Info($"Received notification: {message}", null);
+        }
+
+        private async void ConnectToServer()
+        {
+            await _signalRService.StartConnectionAsync();
+            _logger.Info("Connected to server, waiting for push messages!.", null);
+        }
+
         public async Task UpdateBitcoinData()
+        {
+            await GetAndUpdateBitcoinData();
+        }
+
+        private async Task GetAndUpdateBitcoinData()
         {
             try
             {
