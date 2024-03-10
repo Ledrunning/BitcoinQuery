@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="BitcoinQuery.DesktopClient.View.UserControls.BitcoinDataTable"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0" ItemsSource="{Binding AllBitcoinData}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Last Price" Binding="{Binding LastPrice}" />
+                <DataGridTextColumn Header="First Currency" Binding="{Binding FirstCurrency}" />
+                <DataGridTextColumn Header="Second Currency" Binding="{Binding SecondCurrency}" />
+                <DataGridTextColumn Header="Timestamp" Binding="{Binding FormattedTimestamp}" />
+                <!-- Hide Timestamp -->
+                <DataGridTextColumn Binding="{Binding Timestamp}" Visibility="Hidden" />
+                <DataGridTextColumn Header="Open" Binding="{Binding Open}" />
+                <DataGridTextColumn Header="High" Binding="{Binding High}" />
+                <DataGridTextColumn Header="Low" Binding="{Binding Low}" />
+                <DataGridTextColumn Header="Close" Binding="{Binding Close}" />
+                <DataGridTextColumn Header="Volume" Binding="{Binding Volume}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Width="100" Height="30" Content="Update" 
+                    HorizontalAlignment="Left" Margin="7,0,0,0" 
+                    Command="{Binding UpdateCommand}"/>
+            <Label Grid.Column="1" Content="{Binding LastTimeUpdateText}" />
+            <Label Grid.Column="2" Content="Time of last update"/>
+        </Grid>
+    </Grid>
+</UserControl>
