@@ -36,4 +36,11 @@ public class BitcoinPriceController : ControllerBase
     {
         return await _bitcoinQueryService.GetDataFromRangeAsync(token);
     }
+
+    [HttpGet]
+    [Route(nameof(GetDateTimeRange))]
+    public DateRange GetDateTimeRange()
+    {
+        return _bitcoinQueryService.GetDateRange();
+    }
 }

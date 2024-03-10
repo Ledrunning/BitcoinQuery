@@ -12,14 +12,23 @@ namespace BitcoinQuery.DesktopClient.Rest
     {
         private readonly int _timeout;
         protected readonly string BaseUrl;
-        
+
         public BaseRestClientService(AppConfig appConfig)
         {
             BaseUrl = appConfig.BaseServerUri;
             _timeout = appConfig.Timeout;
         }
-        
-        protected T GetContent<T>(RestResponseBase response)
+
+        /// <summary>
+        ///     Method for testing the config parameters
+        /// </summary>
+        /// <returns></returns>
+        public (string baseUrl, int timeout) GetTimeoutAndBaseUrl()
+        {
+            return (BaseUrl, _timeout);
+        }
+
+        public T GetContent<T>(RestResponseBase response)
         {
             CheckResponse(response);
 

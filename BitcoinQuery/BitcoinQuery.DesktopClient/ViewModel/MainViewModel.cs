@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Controls;
 using System.Windows.Input;
 using BitcoinQuery.DesktopClient.Contracts;
 using BitcoinQuery.DesktopClient.ViewModel.Commands;
@@ -8,16 +7,19 @@ namespace BitcoinQuery.DesktopClient.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
+        private readonly IBitcoinRestClientService _bitcoinRestClientService;
         private readonly INLogLogger _logger;
 
         private string _averageCalculatingText;
-        private DateTime _startDate;
         private DateTime _endDate;
+        private DateTime _startDate;
 
-        public MainViewModel(INLogLogger logger)
+        public MainViewModel(IBitcoinRestClientService bitcoinRestClientService, INLogLogger logger)
         {
+            _bitcoinRestClientService = bitcoinRestClientService;
             _logger = logger;
             CalculateCommand = new RelayCommand(CalculateBitcoinData);
+            //var dateRangeFromServer = _
             _startDate = DateTime.Today;
             _endDate = DateTime.Today;
         }

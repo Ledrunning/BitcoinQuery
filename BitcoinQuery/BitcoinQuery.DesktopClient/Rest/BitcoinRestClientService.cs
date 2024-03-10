@@ -23,5 +23,12 @@ namespace BitcoinQuery.DesktopClient.Rest
             return GetContent<IReadOnlyList<DataPoint>>(response);
         }
 
+        public async Task<DateRange> GetDateTimeRange(CancellationToken token)
+        {
+            var url = new Uri($"{BaseUrl}/GetDateTimeRange");
+            var response = await SendRequestAsync(url, Method.Get, token);
+
+            return GetContent<DateRange>(response);
+        }
     }
 }

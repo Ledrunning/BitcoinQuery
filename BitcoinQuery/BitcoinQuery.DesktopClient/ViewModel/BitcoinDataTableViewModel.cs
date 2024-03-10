@@ -44,7 +44,7 @@ namespace BitcoinQuery.DesktopClient.ViewModel
             set => SetField(ref _allBitcoinData, value);
         }
 
-        private async Task UpdateBitcoinData()
+        public async Task UpdateBitcoinData()
         {
             try
             {
@@ -52,7 +52,7 @@ namespace BitcoinQuery.DesktopClient.ViewModel
                 foreach (var dataPoint in resultDataPointList)
                 {
                     var dtFromTimeStamp = dataPoint.Timestamp.UnixTimeStampToDateTime();
-                    dataPoint.FormattedTimestamp = dataPoint.Timestamp.ToString();//dtFromTimeStamp.ToString(GermanyTimeStandart);
+                    dataPoint.FormattedTimestamp = dtFromTimeStamp.ToString(GermanyTimeStandart);
                     AllBitcoinData.Add(dataPoint);
                 }
 

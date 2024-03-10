@@ -133,6 +133,7 @@
     <Compile Include="Contracts\IBitcoinRestClientService.cs" />
     <Compile Include="Extensions\DateTimeExtension.cs" />
     <Compile Include="Model\DataPoint.cs" />
+    <Compile Include="Model\DateRange.cs" />
     <Compile Include="Rest\BitcoinRestClientService.cs" />
     <Compile Include="ViewModel\BitcoinDataTableViewModel.cs" />
     <Compile Include="View\UserControls\BitcoinDataTable.xaml.cs">

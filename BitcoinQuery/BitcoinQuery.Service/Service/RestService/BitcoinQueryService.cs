@@ -69,29 +69,40 @@ public class BitcoinQueryService : BaseService, IBitcoinQueryService
     /// <exception cref="BitcoinQueryServiceException"></exception>
     public async Task<List<DataPoint>?> GetDataFromRangeAsync(CancellationToken token)
     {
-        GetDateRange(out var startDate, out var endDate);
-
-        var dataPerDay = new List<DataPoint>();
-        for (var date = startDate; date <= endDate; date = date.AddDays(1))
+        try
         {
-            var dailyData = await GetDailyDataAsync(date.ToString("yyyyMMdd"), token);
-            var lastPrice = await GetLastPriceAsync(token);
-            var mappedData = _dataMapper.MapToDataPoints(dailyData.DataPerDay, lastPrice);
+            var resultDateRange = GetDateRange();
 
-            dataPerDay.AddRange(mappedData);
+            var dataPerDay = new List<DataPoint>();
+            for (var date = resultDateRange.StartDate; date <= resultDateRange.EndDate; date = date.AddDays(1))
+            {
+                var dailyData = await GetDailyDataAsync(date.ToString("yyyyMMdd"), token);
+                var lastPrice = await GetLastPriceAsync(token);
+                var mappedData = _dataMapper.MapToDataPoints(dailyData.DataPerDay, lastPrice);
+
+                dataPerDay.AddRange(mappedData);
+            }
+
+            // In order not to send unnecessary requests to the server, we will work with memory cache
+            _cachingService.SaveDataToCache(dataPerDay);
+
+            return dataPerDay;
         }
-
-        // In order not to send unnecessary requests to the server, we will work with memory cache
-        _cachingService.SaveDataToCache(dataPerDay);
-
-        return dataPerDay;
+        catch (Exception e)
+        {
+            Logger.Error(e, $"{nameof(BitcoinQueryService)}: error when obtaining data from month range");
+            throw new BitcoinQueryServiceException(
+                $"{nameof(BitcoinQueryService)}: error when obtaining data from month range");
+        }
     }
 
-    private static void GetDateRange(out DateTime startDate, out DateTime endDate)
+    public static DateRange GetDateRange()
     {
         var today = DateTime.Today;
-
-        startDate = today.AddMonths(DecreaseOneMonth);
-        endDate = today;
+        return new DateRange
+        {
+            StartDate = today.AddMonths(DecreaseOneMonth),
+            EndDate = today
+        };
     }
 }

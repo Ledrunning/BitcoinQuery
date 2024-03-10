@@ -8,4 +8,5 @@ public interface IBitcoinQueryService
     Task<BitcoinPriceData> GetLastPriceAsync(CancellationToken token);
     Task<BitcoinDailyData> GetDailyDataAsync(string date, CancellationToken token);
     Task<List<DataPoint>?> GetDataFromRangeAsync(CancellationToken token);
+    DateRange GetDateRange();
 }
