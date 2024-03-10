@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using BitcoinQuery.DesktopClient.Model;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace BitcoinQuery.DesktopClient.Rest
 {

@@ -2,14 +2,15 @@ using System.Diagnostics;
 using BitcoinQuery.Service.Contracts;
 using BitcoinQuery.Service.Exceptions;
 using BitcoinQuery.Service.Mapper;
+using BitcoinQuery.Service.Push;
 using BitcoinQuery.Service.Service;
 using BitcoinQuery.Service.Service.RestService;
+using BitcoinQuery.Service.TaskScheduler;
 using BitcoinQuery.WebGateway.Configuration;
 using BitcoinQuery.WebGateway.Extensions;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using NLog;
 using NLog.Web;
-using ILogger = NLog.ILogger;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 const string loggerConfig = "NLog.config";
@@ -43,6 +44,16 @@ try
         throw new BitcoinQueryServiceException("Configuration error or invalid file! Check the appsettings.json file.");
     });
 
+    //Configure task scheduler
+    builder.ConfigureHangFire();
+    builder.Services.AddSingleton(serviceProvider =>
+    {
+        var service = serviceProvider.GetRequiredService<BitcoinDataScheduler>();
+        service.ScheduleBitcoinDataUpdate();
+        return service;
+    });
+
+    builder.Services.AddSignalR();
     builder.Services.AddMemoryCache();
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
@@ -61,6 +72,13 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
+
+    app.UseRouting();
+
+    app.UseEndpoints(endpoints =>
+    {
+        _ = endpoints.MapHub<NotificationHub>("/notificationHub");
+    });
 
     logger.Info("Server has been started...");
     app.Run();
