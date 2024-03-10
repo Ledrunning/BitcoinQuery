@@ -16,6 +16,8 @@ Given the nature of this test project, no data access layers, UnitOfWorks, or re
 
 A modern desktop application is developed using C# WPF, following a pure MVVM pattern without any third-party MVVM frameworks and libraries.
 
+![](bitcoinClient.gif)
+
 ### Technology:
 - .NET Framework 4.8
 - WPF
