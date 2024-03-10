@@ -16,6 +16,6 @@ public class DoubleArrayConverter : JsonConverter<double[][]>
 
     public override void WriteJson(JsonWriter writer, double[][] value, JsonSerializer serializer)
     {
-        throw new NotImplementedException();
+        throw new JsonSerializationException($"{nameof(DoubleArrayConverter)}: Serialization of double[][] is not supported.");
     }
 }

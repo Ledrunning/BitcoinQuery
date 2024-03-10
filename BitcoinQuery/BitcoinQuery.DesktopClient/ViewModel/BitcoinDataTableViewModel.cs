@@ -27,6 +27,7 @@ namespace BitcoinQuery.DesktopClient.ViewModel
             _logger = logger;
             _token = token;
             UpdateCommand = new RelayCommand(async () => await UpdateBitcoinData());
+            _ = GetAndUpdateBitcoinData();
         }
 
         public ICommand UpdateCommand { get; }
@@ -37,7 +38,6 @@ namespace BitcoinQuery.DesktopClient.ViewModel
             set => SetField(ref _lastTimeUpdateText, value, nameof(LastTimeUpdateText));
         }
 
-        //TODO add needed model
         public ObservableCollection<DataPoint> AllBitcoinData
         {
             get => _allBitcoinData;
@@ -45,6 +45,11 @@ namespace BitcoinQuery.DesktopClient.ViewModel
         }
 
         public async Task UpdateBitcoinData()
+        {
+            await GetAndUpdateBitcoinData();
+        }
+
+        private async Task GetAndUpdateBitcoinData()
         {
             try
             {

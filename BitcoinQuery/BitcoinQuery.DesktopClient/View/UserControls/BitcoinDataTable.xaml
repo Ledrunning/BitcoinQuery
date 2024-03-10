@@ -10,7 +10,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" ItemsSource="{Binding AllBitcoinData}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="0" IsReadOnly="True" ItemsSource="{Binding AllBitcoinData}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Last Price" Binding="{Binding LastPrice}" />
                 <DataGridTextColumn Header="First Currency" Binding="{Binding FirstCurrency}" />

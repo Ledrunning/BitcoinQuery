@@ -43,4 +43,11 @@ public class BitcoinPriceController : ControllerBase
     {
         return _bitcoinQueryService.GetDateRange();
     }
+
+    [HttpGet]
+    [Route(nameof(GetBitcoinClosingAverage))]
+    public double GetBitcoinClosingAverage(long startDate, long endDate)
+    {
+        return _bitcoinQueryService.GetBitcoinClosingAverageFromRange(startDate, endDate);
+    }
 }

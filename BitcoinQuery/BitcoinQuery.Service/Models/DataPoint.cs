@@ -1,7 +1,11 @@
-﻿namespace BitcoinQuery.Service.Models;
+﻿using Newtonsoft.Json;
+
+namespace BitcoinQuery.Service.Models;
 
 public class DataPoint
 {
+    [JsonIgnore]
+    public long RequestTime { get; set; }
     public string? LastPrice { get; set; }
     public string? FirstCurrency { get; set; }
     public string? SecondCurrency { get; set; }
