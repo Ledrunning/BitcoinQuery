@@ -96,7 +96,7 @@ public class BitcoinQueryService : BaseService, IBitcoinQueryService
         }
     }
 
-    public static DateRange GetDateRange()
+    public DateRange GetDateRange()
     {
         var today = DateTime.Today;
         return new DateRange
