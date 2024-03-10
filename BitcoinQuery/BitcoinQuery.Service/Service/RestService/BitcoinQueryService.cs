@@ -111,19 +111,6 @@ public class BitcoinQueryService : BaseService, IBitcoinQueryService
         };
     }
 
-    private static IEnumerable<DataPoint> FilterLastMonthData(DateRange resultDateRange, List<DataPoint> mappedData)
-    {
-        //Filtering for last chosen month, because I found data in JSON f.e from 4 month ago
-        var startDateTimestamp = long.Parse(resultDateRange.StartDate.ToString("yyyyMMdd"));
-        var endDateTimestamp = long.Parse(resultDateRange.EndDate.ToString("yyyyMMdd"));
-
-        var filteredData = mappedData
-            .Where(data => data.RequestTime >= startDateTimestamp && data.RequestTime <= endDateTimestamp)
-            .ToList();
-
-        return filteredData;
-    }
-
     public double GetBitcoinClosingAverageFromRange(long startDate, long endDate)
     {
         var lastCachedData = _cachingService.GetLatestDataFromCache();
@@ -142,5 +129,18 @@ public class BitcoinQueryService : BaseService, IBitcoinQueryService
         var bitcoinCloseSum = filteredData.Sum(data => data.Close);
         var bitcoinCloseAverage = bitcoinCloseSum / filteredData.Count;
         return bitcoinCloseAverage;
+    }
+
+    private static IEnumerable<DataPoint> FilterLastMonthData(DateRange resultDateRange, List<DataPoint> mappedData)
+    {
+        //Filtering for last chosen month, because I found data in JSON f.e from 4 month ago
+        var startDateTimestamp = long.Parse(resultDateRange.StartDate.ToString("yyyyMMdd"));
+        var endDateTimestamp = long.Parse(resultDateRange.EndDate.ToString("yyyyMMdd"));
+
+        var filteredData = mappedData
+            .Where(data => data.RequestTime >= startDateTimestamp && data.RequestTime <= endDateTimestamp)
+            .ToList();
+
+        return filteredData;
     }
 }

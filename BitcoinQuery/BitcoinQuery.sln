@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitcoinQuery.Service", "Bit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinQuery.DesktopClientUnitTests", "BitcoinQuery.DesktopClientUnitTests\BitcoinQuery.DesktopClientUnitTests.csproj", "{5BE2BF85-2564-4782-B331-4DE0E9003E3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerSideUnitTests", "ServerSideUnitTests\ServerSideUnitTests.csproj", "{90E7B807-B760-49D9-97DE-0B65244FDFF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitcoinQuery.ServerSideUnitTests", "BitcoinQuery.ServerSideUnitTests\BitcoinQuery.ServerSideUnitTests.csproj", "{90E7B807-B760-49D9-97DE-0B65244FDFF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
