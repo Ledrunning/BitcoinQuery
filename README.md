@@ -1,6 +1,6 @@
 # BitcoinQuery
 
-## Task task for igniti GmbH
+## Client-server application for retrieving and querying the daily closing prices of bitcoin in US-Dollar
 
 Client-server application for retrieving and querying the daily closing prices of bitcoin in US-Dollar for the last 31 days in a C#.NET desktop application. To obtain the BTC/USD daily closing prices, the following API is used: [https://cex.io/rest-api](https://cex.io/rest-api).
 
