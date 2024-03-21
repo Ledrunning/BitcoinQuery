@@ -26,6 +26,7 @@ A modern desktop application is developed using C# WPF, following a pure MVVM pa
 - Autofac
 - RestSharp
 - SignalR
+- Unit Tests (NUnit)
 
 ## Server-side
 
@@ -37,6 +38,7 @@ A modern microservice is implemented using C# .NET 8.
 - RestSharp
 - Hangfire
 - SignalR
+- Unit Tests (NUnit)
 
 ## Configuring Client-side
 
