@@ -1,0 +1,73 @@
+name: BitcoinQuery Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        platform: [Any CPU]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Framework 4.8
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '4.8'
+
+      - name: Restore NuGet packages for BitcoinQuery.DesktopClient
+        run: dotnet restore BitcoinQuery.DesktopClient/BitcoinQuery.DesktopClient.csproj
+
+      - name: Build BitcoinQuery.DesktopClient
+        run: dotnet build BitcoinQuery.DesktopClient/BitcoinQuery.DesktopClient.csproj --configuration Release
+
+      - name: Restore NuGet packages for BitcoinQuery.DesktopClientUnitTests
+        run: dotnet restore BitcoinQuery.DesktopClientUnitTests/BitcoinQuery.DesktopClientUnitTests.csproj
+
+      - name: Build BitcoinQuery.DesktopClientUnitTests
+        run: dotnet build BitcoinQuery.DesktopClientUnitTests/BitcoinQuery.DesktopClientUnitTests.csproj --configuration Release
+
+      - name: Run BitcoinQuery.DesktopClientUnitTests
+        run: dotnet test BitcoinQuery.DesktopClientUnitTests/BitcoinQuery.DesktopClientUnitTests.csproj --configuration Release
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.x'
+
+      - name: Restore NuGet packages for BitcoinQuery.ServerSideUnitTests
+        run: dotnet restore BitcoinQuery.ServerSideUnitTests/BitcoinQuery.ServerSideUnitTests.csproj
+
+      - name: Build BitcoinQuery.ServerSideUnitTests
+        run: dotnet build BitcoinQuery.ServerSideUnitTests/BitcoinQuery.ServerSideUnitTests.csproj --configuration Release
+
+      - name: Run BitcoinQuery.ServerSideUnitTests
+        run: dotnet test BitcoinQuery.ServerSideUnitTests/BitcoinQuery.ServerSideUnitTests.csproj --configuration Release
+
+      - name: Restore NuGet packages for BitcoinQuery.Service
+        run: dotnet restore BitcoinQuery.Service/BitcoinQuery.Service.csproj
+
+      - name: Build BitcoinQuery.Service
+        run: dotnet build BitcoinQuery.Service/BitcoinQuery.Service.csproj --configuration Release
+
+      - name: Restore NuGet packages for BitcoinQuery.UnitTests
+        run: dotnet restore BitcoinQuery.UnitTests/BitcoinQuery.UnitTests.csproj
+
+      - name: Build BitcoinQuery.UnitTests
+        run: dotnet build BitcoinQuery.UnitTests/BitcoinQuery.UnitTests.csproj --configuration Release
+
+      - name: Run BitcoinQuery.UnitTests
+        run: dotnet test BitcoinQuery.UnitTests/BitcoinQuery.UnitTests.csproj --configuration Release
+
+      - name: Restore NuGet packages for BitcoinQuery.WebGateway
+        run: dotnet restore BitcoinQuery.WebGateway/BitcoinQuery.WebGateway.csproj
+
+      - name: Build BitcoinQuery.WebGateway
+        run: dotnet build BitcoinQuery.WebGateway/BitcoinQuery.WebGateway.csproj --configuration Release
