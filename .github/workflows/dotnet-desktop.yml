@@ -26,7 +26,6 @@ jobs:
 
       - name: Restore and build projects
         run: |
-          # Restore and build .NET Core projects here
 
       - name: Restore NuGet packages for BitcoinQuery.DesktopClient
         run: dotnet restore BitcoinQuery.DesktopClient/BitcoinQuery.DesktopClient.csproj
