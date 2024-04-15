@@ -1,4 +1,4 @@
-using System.Diagnostics;
+Ôªøusing System.Diagnostics;
 using BitcoinQuery.Service.Contracts;
 using BitcoinQuery.Service.Exceptions;
 using BitcoinQuery.Service.Mapper;
@@ -33,11 +33,11 @@ try
     builder.Services.AddTransient<IBitcoinQueryService>(serviceProvider =>
     {
         var bitcoinDataMapper = serviceProvider.GetRequiredService<IBitcoinDataMapper>();
-        var ÒachingService = serviceProvider.GetRequiredService<IDataCachingService>();
+        var —ÅachingService = serviceProvider.GetRequiredService<IDataCachingService>();
         // If something went wrong with the config section - throw it up!
         if (cexConfigSection is { BaseUrl: { }, FirstCurrency: { }, SecondCurrency: { } })
         {
-            return new BitcoinQueryService(logger, bitcoinDataMapper, ÒachingService, cexConfigSection.BaseUrl,
+            return new BitcoinQueryService(logger, bitcoinDataMapper, —ÅachingService, cexConfigSection.BaseUrl,
                 cexConfigSection.Timeout,
                 cexConfigSection.FirstCurrency, cexConfigSection.SecondCurrency);
         }
