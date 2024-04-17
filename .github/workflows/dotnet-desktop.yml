@@ -24,12 +24,8 @@ jobs:
       - name: Install .NET Framework 4.8 with Chocolatey
         run: choco install netfx-4.8 -y
 
-      - name: Restore and build projects
-        run: |
-
-      - name: Restore NuGet packages
+      - name: Restore NuGet packages for solution
         run: nuget restore BitcoinQuery.sln
-
 
       - name: Restore NuGet packages for BitcoinQuery.DesktopClient
         run: dotnet restore BitcoinQuery/BitcoinQuery.DesktopClient/BitcoinQuery.DesktopClient.csproj
@@ -46,7 +42,7 @@ jobs:
       - name: Run BitcoinQuery.DesktopClientUnitTests
         run: dotnet test BitcoinQuery/BitcoinQuery.DesktopClientUnitTests/BitcoinQuery.DesktopClientUnitTests.csproj --configuration Release
 
-      - name: Setup .NET 8
+      - name: Setup .NET 5
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.x'
@@ -66,17 +62,4 @@ jobs:
       - name: Build BitcoinQuery.Service
         run: dotnet build BitcoinQuery/BitcoinQuery.Service/BitcoinQuery.Service.csproj --configuration Release
 
-      - name: Restore NuGet packages for BitcoinQuery.UnitTests
-        run: dotnet restore BitcoinQuery/BitcoinQuery.UnitTests/BitcoinQuery.UnitTests.csproj
-
-      - name: Build BitcoinQuery.UnitTests
-        run: dotnet build BitcoinQuery/BitcoinQuery.UnitTests/BitcoinQuery.UnitTests.csproj --configuration Release
-
-      - name: Run BitcoinQuery.UnitTests
-        run: dotnet test BitcoinQuery/BitcoinQuery.UnitTests/BitcoinQuery.UnitTests.csproj --configuration Release
-
-      - name: Restore NuGet packages for BitcoinQuery.WebGateway
-        run: dotnet restore BitcoinQuery/BitcoinQuery.WebGateway/BitcoinQuery.WebGateway.csproj
-
-      - name: Build BitcoinQuery.WebGateway
-        run: dotnet build BitcoinQuery/BitcoinQuery.WebGateway/BitcoinQuery.WebGateway.csproj --configuration Release
+      - name: Restore NuGet packages for Bi
