@@ -25,7 +25,7 @@ jobs:
         run: choco install netfx-4.8 -y
 
       - name: Restore NuGet packages for solution
-        run: nuget restore BitcoinQuery.sln
+        run: nuget restore BitcoinQuery/BitcoinQuery.sln
 
       - name: Restore NuGet packages for BitcoinQuery.DesktopClient
         run: dotnet restore BitcoinQuery/BitcoinQuery.DesktopClient/BitcoinQuery.DesktopClient.csproj
