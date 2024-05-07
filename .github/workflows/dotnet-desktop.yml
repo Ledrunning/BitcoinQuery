@@ -25,7 +25,7 @@ jobs:
         run: choco install netfx-4.8 -y
 
       - name: Install .NET Framework 4.0 Developer Pack with Chocolatey
-        run: choco install dotnet4.0-targetpack -y
+        run: choco install netfx-4.8-devpack
 
       - name: Restore NuGet packages for solution
         run: nuget restore BitcoinQuery/BitcoinQuery.sln
