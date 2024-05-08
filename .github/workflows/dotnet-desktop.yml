@@ -24,8 +24,8 @@ jobs:
       - name: Install .NET Framework 4.8 with Chocolatey
         run: choco install netfx-4.8.1
 
-      #- name: Install .NET Framework 4.0 Developer Pack with Chocolatey
-        #run: choco install netfx-4.0.2-devpack
+      - name: Install .NET Framework 4.0 Developer Pack with Chocolatey
+        run: choco install netfx-4.8.1-devpack
         
       - name: Restore NuGet packages for solution
         run: nuget restore BitcoinQuery/BitcoinQuery.sln
@@ -45,10 +45,10 @@ jobs:
       - name: Run BitcoinQuery.DesktopClientUnitTests
         run: dotnet test BitcoinQuery/BitcoinQuery.DesktopClientUnitTests/BitcoinQuery.DesktopClientUnitTests.csproj --configuration Release
 
-      - name: Setup .NET 5
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.x'
+          dotnet-version: '8.x'
 
       - name: Restore NuGet packages for BitcoinQuery.ServerSideUnitTests
         run: dotnet restore BitcoinQuery/BitcoinQuery.ServerSideUnitTests/BitcoinQuery.ServerSideUnitTests.csproj
