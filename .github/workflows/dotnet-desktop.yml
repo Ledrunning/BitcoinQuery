@@ -9,23 +9,17 @@ jobs:
   build:
     runs-on: windows-latest
 
-    strategy:
-      matrix:
-        platform: [Any CPU]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install Chocolatey
+      - name: Install .NET Framework 4.8.1 if needed
         run: |
-          Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-
-      - name: Install .NET Framework 4.8.1 with Chocolatey
-        run: choco install netfx-4.8.1
-
-      - name: Install .NET Framework 4.8.1 Developer Pack with Chocolatey
-        run: choco install netfx-4.8.1-devpack
+          $netVersion = Get-ChildItem "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP" -ErrorAction SilentlyContinue | Get-ItemPropertyValue -Name Version -ErrorAction SilentlyContinue
+          if ($netVersion -notcontains "v4.8.04084") {
+            choco install netfx-4.8.1
+            choco install netfx-4.8.1-devpack
+          }
 
       - name: Build BitcoinQuery.DesktopClient
         run: dotnet build BitcoinQuery/BitcoinQuery.DesktopClient/BitcoinQuery.DesktopClient.csproj --configuration Release
