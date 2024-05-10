@@ -64,8 +64,15 @@ namespace BitcoinQuery.DesktopClient.ViewModel
 
         private async void ConnectToServer()
         {
-            await _signalRService.StartConnectionAsync();
-            _logger.Info("Connected to server, waiting for push messages!.", null);
+            try
+            {
+                await _signalRService.StartConnectionAsync();
+                _logger.Info("Connected to server, waiting for push messages!.", null);
+            }
+            catch (Exception e)
+            {
+                _logger.Info("Connection to server error!", e);
+            }
         }
 
         public async Task UpdateBitcoinData()

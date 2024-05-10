@@ -1,10 +1,10 @@
-﻿using BitcoinQuery.DesktopClient.DiSetup;
-using System.Windows;
+﻿using System.Windows;
+using BitcoinQuery.DesktopClient.DiSetup;
 
 namespace BitcoinQuery.DesktopClient
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    ///     Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {

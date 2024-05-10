@@ -1,7 +1,7 @@
-﻿using Autofac;
+﻿using System.Windows.Controls;
+using Autofac;
 using BitcoinQuery.DesktopClient.DiSetup;
 using BitcoinQuery.DesktopClient.ViewModel;
-using System.Windows.Controls;
 
 namespace BitcoinQuery.DesktopClient.View.UserControls
 {

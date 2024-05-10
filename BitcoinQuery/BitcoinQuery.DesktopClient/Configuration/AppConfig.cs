@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+
 namespace BitcoinQuery.DesktopClient.Configuration
 {
     public class AppConfig
@@ -6,7 +7,7 @@ namespace BitcoinQuery.DesktopClient.Configuration
         public string BaseServerUri { get; set; }
         public string ServerPushUri { get; set; }
         public int Timeout { get; set; }
-        
+
         public AppConfig LoadConfiguration()
         {
             return new AppConfig
@@ -15,7 +16,7 @@ namespace BitcoinQuery.DesktopClient.Configuration
                 ServerPushUri = ConfigurationManager.AppSettings["serverPushUriString"],
                 Timeout = int.TryParse(ConfigurationManager.AppSettings["timeOut"], out var timeout)
                     ? timeout
-                    : -1, // or some default value
+                    : -1 // or some default value
             };
         }
     }
