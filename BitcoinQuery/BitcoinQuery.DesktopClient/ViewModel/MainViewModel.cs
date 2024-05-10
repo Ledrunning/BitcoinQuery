@@ -19,7 +19,8 @@ namespace BitcoinQuery.DesktopClient.ViewModel
         private DateTime _endDate;
         private DateTime _startDate;
 
-        public MainViewModel(IBitcoinRestClientService bitcoinRestClientService, INLogLogger logger, CancellationToken token)
+        public MainViewModel(IBitcoinRestClientService bitcoinRestClientService, INLogLogger logger,
+            CancellationToken token)
         {
             _bitcoinRestClientService = bitcoinRestClientService;
             _logger = logger;
@@ -30,7 +31,7 @@ namespace BitcoinQuery.DesktopClient.ViewModel
 
             InitializeDatePickersAsync();
         }
-        
+
         public ICommand CalculateCommand { get; }
 
         public DateTime StartDate

@@ -1,11 +1,11 @@
-﻿using BitcoinQuery.DesktopClient.Configuration;
-using BitcoinQuery.DesktopClient.Contracts;
-using RestSharp;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Threading;
-using System;
+using System.Threading.Tasks;
+using BitcoinQuery.DesktopClient.Configuration;
+using BitcoinQuery.DesktopClient.Contracts;
 using BitcoinQuery.DesktopClient.Model;
+using RestSharp;
 
 namespace BitcoinQuery.DesktopClient.Rest
 {
